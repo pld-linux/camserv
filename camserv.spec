@@ -1,87 +1,78 @@
-%define name camserv
-%define version 0.5.0
-%define release 1
-%define prefix /usr/local
-
-Summary: A streaming web video browser and utilities.
-Name: %{name}
-Version: %{version}
-Release: %{release}
-Group: Applications/Web
-Copyright: GPL
-Source: %{name}-%{version}.tar.gz
-Url: http://cserv.sourceforge.net
-BuildRoot: /var/tmp/%{name}-%{version}-build
-Requires: libjpeg >= 6b
-Requires: imlib2 >= 1.0.5
-Requires: gdk-pixbuf >= 0.11.0
-Prefix: %prefix
+Summary:	A streaming web video server and utilities
+Summary(pl):	Serwer strumieni obrazu z WWW i narzêdzia
+Name:		camserv
+Version:	0.5.0
+Release:	1
+License:	GPL
+Group:		Applications/Networking
+Source0:	%{name}-%{version}.tar.gz
+URL:		http://cserv.sourceforge.net/
+Requires:	gdk-pixbuf >= 0.11.0
+Requires:	imlib2 >= 1.0.5
+Requires:	libjpeg >= 6b
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Camserv is an extremely modular program for doing streaming video 
-from your Unix machine to web clients.  Filters can be added for 
-text on the displayed window, and anything else one wants to add. 
+Camserv is an extremely modular program for doing streaming video from
+your Unix machine to web clients. Filters can be added for text on the
+displayed window, and anything else one wants to add.
 
-In addition portability to other unices should be incredibly easy given
-the modularity of the camera plugin modules.
+In addition portability to other unices should be incredibly easy
+given the modularity of the camera plugin modules.
 
 Utilities for camera broadcast webserver offloading are also included.
 
+%description -l pl
+Camserv jest skrajnie modularnym programem do tworzenia strumieni
+obrazu dla klientów sieciowych. Mog± byæ dodane filtry dla tekstu w
+wy¶wietlanym okienku, a tak¿e wszystkiego innego, co chcia³oby siê
+dodaæ.
+
+Ponadto powinien byæ ³atwo przeno¶ny na inne uniksy dziêki
+modularno¶ci wtyczek dla kamer.
+
+Do³±czono tak¿e narzêdzia do obs³ugi serwera obrazu z kamer.
+
 %prep
-%setup
+%setup -q
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix} --with-gzip
-make
+CFLAGS="%{rpmcflags}" \
+./configure --prefix=%{_prefix} --with-gzip
+
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{prefix}
-make prefix=$RPM_BUILD_ROOT%{prefix} install
+install -d $RPM_BUILD_ROOT%{_prefix}
+
+%{__make} install \
+	prefix=$RPM_BUILD_ROOT%{_prefix}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
+%defattr(644,root,root,755)
 %doc AUTHORS BUGS COPYING ChangeLog NEWS README TODO javascript.txt
-%{prefix}/share/camserv/camserv.cfg
-%{prefix}/share/camserv/defpage.html
-%{prefix}/bin/camserv
-%{prefix}/bin/relay
-%{prefix}/lib/camserv/lib*.so.*
-%{prefix}/lib/camserv/libvideo_v4l.a
-%{prefix}/lib/camserv/libvideo_v4l.la
-%{prefix}/lib/camserv/libvideo_v4l.so
-%{prefix}/lib/camserv/libvideo_basic.a
-%{prefix}/lib/camserv/libvideo_basic.la
-%{prefix}/lib/camserv/libvideo_basic.so
-%{prefix}/lib/camserv/libtext_filter.a
-%{prefix}/lib/camserv/libtext_filter.la
-%{prefix}/lib/camserv/libtext_filter.so
-%{prefix}/lib/camserv/librand_filter.a
-%{prefix}/lib/camserv/librand_filter.la
-%{prefix}/lib/camserv/librand_filter.so
-%{prefix}/lib/camserv/libgdk_pixbuf_filter.a
-%{prefix}/lib/camserv/libgdk_pixbuf_filter.la
-%{prefix}/lib/camserv/libgdk_pixbuf_filter.so
-%{prefix}/lib/camserv/libimlib2_filter.a
-%{prefix}/lib/camserv/libimlib2_filter.la
-%{prefix}/lib/camserv/libimlib2_filter.so
-%{prefix}/lib/camserv/libjpg_filter.a
-%{prefix}/lib/camserv/libjpg_filter.la
-%{prefix}/lib/camserv/libjpg_filter.so
-
-
-%changelog
-* Sun Mar 10 2002 Jon Travis <jtravis@p00p.org>
-- Long overdue release which mainly fixes up build issues
-
-* Sun Feb 13 2000 Jon Travis <jtravis@cse.unl.edu>
-- Yet another release.. yay.
-
-* Thu Nov 18 1999 Jon Travis <jon@dsndata.com>
-- Another release.. yay.
-
-* Wed Oct 27 1999 Jon Travis <jon@dsndata.com>
-- Initial package creation
+%attr(755,root,root) %{_bindir}/camserv
+%attr(755,root,root) %{_bindir}/relay
+%dir %{_datadir}/camserv
+%{_datadir}/camserv/camserv.cfg
+%{_datadir}/camserv/defpage.html
+%dir %{_libdir}/camserv
+%attr(755,root,root) %{_libdir}/camserv/lib*.so.*
+%{_libdir}/camserv/libvideo_v4l.la
+%{_libdir}/camserv/libvideo_v4l.so
+%{_libdir}/camserv/libvideo_basic.la
+%{_libdir}/camserv/libvideo_basic.so
+%{_libdir}/camserv/libtext_filter.la
+%{_libdir}/camserv/libtext_filter.so
+%{_libdir}/camserv/librand_filter.la
+%{_libdir}/camserv/librand_filter.so
+%{_libdir}/camserv/libgdk_pixbuf_filter.la
+%{_libdir}/camserv/libgdk_pixbuf_filter.so
+%{_libdir}/camserv/libimlib2_filter.la
+%{_libdir}/camserv/libimlib2_filter.so
+%{_libdir}/camserv/libjpg_filter.la
+%{_libdir}/camserv/libjpg_filter.so
