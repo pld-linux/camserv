@@ -1,0 +1,31 @@
+--- camserv-0.5.1/configure.in.orig	Sun May 12 20:06:12 2002
++++ camserv-0.5.1/configure.in	Wed Jul  9 10:50:54 2003
+@@ -12,7 +12,7 @@
+ AM_ACLOCAL_INCLUDE(macros)
+ 
+ AC_PROG_CC
+-AC_LIBLTDL_CONVENIENCE
++AC_LIBLTDL_INSTALLABLE
+ AC_LIBTOOL_DLOPEN
+ AM_PROG_LIBTOOL
+ AC_SUBST(LIBLTDL)
+@@ -21,8 +21,8 @@
+ 
+ AC_CHECK_LIB(m,sqrt)
+ AC_CHECK_LIB(jpeg,jpeg_start_compress)
+-AC_CHECK_LIB(socket,socket)
+-AC_CHECK_LIB(nsl,inet_ntoa)
++AC_SEARCH_LIBS(socket,socket)
++AC_SEARCH_LIBS(inet_ntoa,nsl)
+ 
+ have_imlib2=no
+ AC_PATH_PROG(IMLIB2_CONFIG,imlib2-config)
+@@ -55,7 +55,7 @@
+ if test "$GDKPIXBUF_CONFIG"x != "x"; then
+ 	GDKPIXBUF_VERSION=`$GDKPIXBUF_CONFIG --version`
+ 	case "$GDKPIXBUF_VERSION" in
+-	    0.14.*) have_gdkpixbuf=yes
++	    0.1[[4-9]].*|0.2[[0-9]].*) have_gdkpixbuf=yes
+ 		 GDKPIXBUF_CFLAGS=`$GDKPIXBUF_CONFIG --cflags`
+ 		 GDKPIXBUF_LIBS=`$GDKPIXBUF_CONFIG --libs`
+ 		 CFLAGS="$CFLAGS $GDKPIXBUF_CFLAGS"
