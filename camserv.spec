@@ -8,9 +8,12 @@ Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/cserv/%{name}-%{version}.tar.gz
 # Source0-md5:	ad6a1c9a5b522a4ee2189c66d7fbda72
 URL:		http://cserv.sourceforge.net/
-Requires:	gdk-pixbuf >= 0.11.0
-Requires:	imlib2 >= 1.0.5
-Requires:	libjpeg >= 6b
+BuildRequires:	gdk-pixbuf >= 0.14.0
+BuildRequires:	imlib2-devel >= 1.0.5
+BuildRequires:	libjpeg-devel >= 6b
+#Requires:	gdk-pixbuf >= 0.14.0
+#Requires:	imlib2 >= 1.0.5
+#Requires:	libjpeg >= 6b
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
