@@ -20,6 +20,8 @@ BuildRequires:	imlib2-devel >= 1.0.6
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libltdl-devel
 BuildRequires:	libtool
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 Requires:	gdk-pixbuf >= 0.14.0
 Requires:	imlib2 >= 1.0.5
 Requires:	libjpeg >= 6b
@@ -48,14 +50,16 @@ Do³±czono tak¿e narzêdzia do obs³ugi serwera obrazu z kamer.
 
 %package relay
 Summary:	Relay for camserv
-Summary(pl):	Relay dla camserv
+Summary(pl):	Przeka¼nik dla camserva
 Group:          Networking
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 
 %description relay
 Relay for camserv.
 
 %description relay -l pl
-Relay dla camserv.
+Przeka¼nik dla camserva.
 
 %prep
 %setup -q
@@ -80,8 +84,7 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},/etc/{%{name},sysconfig,rc.d/init.d}}
+install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_sysconfdir}/%{name},/etc/{sysconfig,rc.d/init.d}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -90,8 +93,8 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}-relay
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/%{name}-relay
 
-mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}.cfg $RPM_BUILD_ROOT/etc/%{name}/%{name}.cfg
-mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/defpage.html $RPM_BUILD_ROOT/etc/%{name}/defpage.html
+mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}.cfg $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/%{name}.cfg
+mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/defpage.html $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/defpage.html
 
 ln -s /etc/%{name}/%{name}.cfg $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}.cfg
 ln -s /etc/%{name}/defpage.html $RPM_BUILD_ROOT%{_datadir}/%{name}/defpage.html
@@ -135,9 +138,10 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS BUGS ChangeLog NEWS README TODO javascript.txt
 %attr(755,root,root) %{_bindir}/camserv
+%dir %{_sysconfdir}/%{name}
+%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}/%{name}.cfg
+%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}/defpage.html
 %dir %{_datadir}/camserv
-%config(noreplace) %verify(not md5 size mtime) /etc/%{name}/%{name}.cfg
-%config(noreplace) %verify(not md5 size mtime) /etc/%{name}/defpage.html
 %{_datadir}/camserv/camserv.cfg
 %{_datadir}/camserv/defpage.html
 %dir %{_libdir}/camserv
