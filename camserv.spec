@@ -54,7 +54,7 @@ Group:          Networking
 %description relay
 Relay for camserv.
 
-%description relay
+%description relay -l pl
 Relay dla camserv.
 
 %prep
