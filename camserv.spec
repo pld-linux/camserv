@@ -51,7 +51,7 @@ Do³±czono tak¿e narzêdzia do obs³ugi serwera obrazu z kamer.
 %package relay
 Summary:	Relay for camserv
 Summary(pl):	Przeka¼nik dla camserva
-Group:          Networking
+Group:		Networking
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 
@@ -105,33 +105,33 @@ rm -rf $RPM_BUILD_ROOT
 %post
 /sbin/chkconfig --add %{name}
 if [ -f /var/lock/subsys/%{name} ]; then
-        /etc/rc.d/init.d/%{name} restart 1>&2
+	/etc/rc.d/init.d/%{name} restart 1>&2
 else
-        echo "Run \"/etc/rc.d/init.d/%{name} start\" to start %{name} service."
+	echo "Run \"/etc/rc.d/init.d/%{name} start\" to start %{name} service."
 fi
 
 %preun
 if [ "$1" = "0" ]; then
-        if [ -f /var/lock/subsys/%{name} ]; then
-                /etc/rc.d/init.d/%{name} stop 1>&2
-        fi
-        /sbin/chkconfig --del %{name}
+	if [ -f /var/lock/subsys/%{name} ]; then
+		/etc/rc.d/init.d/%{name} stop 1>&2
+	fi
+	/sbin/chkconfig --del %{name}
 fi
 
 %post relay
 /sbin/chkconfig --add %{name}-relay
 if [ -f /var/lock/subsys/%{name}-relay ]; then
-        /etc/rc.d/init.d/%{name}-relay restart 1>&2
+	/etc/rc.d/init.d/%{name}-relay restart 1>&2
 else
-        echo "Run \"/etc/rc.d/init.d/%{name}-relay start\" to start %{name}-relay service."
+	echo "Run \"/etc/rc.d/init.d/%{name}-relay start\" to start %{name}-relay service."
 fi
 
 %preun relay
 if [ "$1" = "0" ]; then
-        if [ -f /var/lock/subsys/%{name}-relay ]; then
-                /etc/rc.d/init.d/%{name}-relay stop 1>&2
-        fi
-        /sbin/chkconfig --del %{name}-relay
+	if [ -f /var/lock/subsys/%{name}-relay ]; then
+		/etc/rc.d/init.d/%{name}-relay stop 1>&2
+	fi
+	/sbin/chkconfig --del %{name}-relay
 fi
 
 %files
