@@ -1,0 +1,12 @@
+# Customized setings for camserv
+
+# Nice level for camserv
+SERVICE_RUN_NICE_LEVEL="+5"
+
+# local port
+LOCAL_PORT=
+
+# where redirect connections
+CAMSERV_IP=
+CAMSERV_PORT=
+
