@@ -2,18 +2,21 @@ Summary:	A streaming web video server and utilities
 Summary(pl):	Serwer strumieni obrazu z WWW i narzêdzia
 Name:		camserv
 Version:	0.5.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/cserv/%{name}-%{version}.tar.gz
 # Source0-md5:	ad6a1c9a5b522a4ee2189c66d7fbda72
+Source1:	%{name}.init
+Source2:	%{name}-relay.init
+Source3:	%{name}-relay.sysconfig
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-errno.patch
 URL:		http://cserv.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gdk-pixbuf-devel >= 0.14.0
-BuildRequires:	imlib2-devel >= 1.0.5
+BuildRequires:	imlib2-devel >= 1.0.6
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libltdl-devel
 BuildRequires:	libtool
@@ -43,6 +46,17 @@ modularno¶ci wtyczek dla kamer.
 
 Do³±czono tak¿e narzêdzia do obs³ugi serwera obrazu z kamer.
 
+%package relay
+Summary:	Relay for camserv
+Summary(pl):	Relay dla camserv
+Group:          Networking
+
+%description relay
+Relay for camserv.
+
+%description relay
+Relay dla camserv.
+
 %prep
 %setup -q
 %patch0 -p1
@@ -67,32 +81,72 @@ cd ..
 %install
 rm -rf $RPM_BUILD_ROOT
 
+install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},/etc/{%{name},sysconfig,rc.d/init.d}}
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}-relay
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/%{name}-relay
+
+mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}.cfg $RPM_BUILD_ROOT/etc/%{name}/%{name}.cfg
+mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/defpage.html $RPM_BUILD_ROOT/etc/%{name}/defpage.html
+
+ln -s /etc/%{name}/%{name}.cfg $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}.cfg
+ln -s /etc/%{name}/defpage.html $RPM_BUILD_ROOT%{_datadir}/%{name}/defpage.html
+
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+/sbin/chkconfig --add %{name}
+if [ -f /var/lock/subsys/%{name} ]; then
+        /etc/rc.d/init.d/%{name} restart 1>&2
+else
+        echo "Run \"/etc/rc.d/init.d/%{name} start\" to start %{name} service."
+fi
+
+%preun
+if [ "$1" = "0" ]; then
+        if [ -f /var/lock/subsys/%{name} ]; then
+                /etc/rc.d/init.d/%{name} stop 1>&2
+        fi
+        /sbin/chkconfig --del %{name}
+fi
+
+%post relay
+/sbin/chkconfig --add %{name}-relay
+if [ -f /var/lock/subsys/%{name}-relay ]; then
+        /etc/rc.d/init.d/%{name}-relay restart 1>&2
+else
+        echo "Run \"/etc/rc.d/init.d/%{name}-relay start\" to start %{name}-relay service."
+fi
+
+%preun relay
+if [ "$1" = "0" ]; then
+        if [ -f /var/lock/subsys/%{name}-relay ]; then
+                /etc/rc.d/init.d/%{name}-relay stop 1>&2
+        fi
+        /sbin/chkconfig --del %{name}-relay
+fi
 
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS BUGS ChangeLog NEWS README TODO javascript.txt
 %attr(755,root,root) %{_bindir}/camserv
-%attr(755,root,root) %{_bindir}/relay
 %dir %{_datadir}/camserv
+%config(noreplace) %verify(not md5 size mtime) /etc/%{name}/%{name}.cfg
+%config(noreplace) %verify(not md5 size mtime) /etc/%{name}/defpage.html
 %{_datadir}/camserv/camserv.cfg
 %{_datadir}/camserv/defpage.html
 %dir %{_libdir}/camserv
-%attr(755,root,root) %{_libdir}/camserv/libvideo_v4l.so*
-%{_libdir}/camserv/libvideo_v4l.la
-%attr(755,root,root) %{_libdir}/camserv/libvideo_basic.so*
-%{_libdir}/camserv/libvideo_basic.la
-%attr(755,root,root) %{_libdir}/camserv/libtext_filter.so*
-%{_libdir}/camserv/libtext_filter.la
-%attr(755,root,root) %{_libdir}/camserv/librand_filter.so*
-%{_libdir}/camserv/librand_filter.la
-%attr(755,root,root) %{_libdir}/camserv/libgdk_pixbuf_filter.so*
-%{_libdir}/camserv/libgdk_pixbuf_filter.la
-%attr(755,root,root) %{_libdir}/camserv/libimlib2_filter.so*
-%{_libdir}/camserv/libimlib2_filter.la
-%attr(755,root,root) %{_libdir}/camserv/libjpg_filter.so*
-%{_libdir}/camserv/libjpg_filter.la
+%attr(755,root,root) %{_libdir}/camserv/lib*.so*
+%{_libdir}/camserv/lib*.la
+%attr(754,root,root) /etc/rc.d/init.d/%{name}
+
+%files relay
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/relay
+%attr(754,root,root) /etc/rc.d/init.d/%{name}-relay
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/%{name}-relay
