@@ -5,7 +5,8 @@ Version:	0.5.0
 Release:	1
 License:	GPL
 Group:		Applications/Networking
-Source0:	%{name}-%{version}.tar.gz
+#Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/cserv/%{name}-%{version}.tar.gz
+Source0:	http://cserv.sourceforge.net/old/%{name}-%{version}.tar.gz
 URL:		http://cserv.sourceforge.net/
 Requires:	gdk-pixbuf >= 0.11.0
 Requires:	imlib2 >= 1.0.5
