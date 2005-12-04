@@ -20,7 +20,7 @@ BuildRequires:	imlib2-devel >= 1.0.6
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libltdl-devel
 BuildRequires:	libtool
-PreReq:		rc-scripts
+Requires:	rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	gdk-pixbuf >= 0.14.0
 Requires:	imlib2 >= 1.0.5
@@ -52,7 +52,7 @@ Do³±czono tak¿e narzêdzia do obs³ugi serwera obrazu z kamer.
 Summary:	Relay for camserv
 Summary(pl):	Przeka¼nik dla camserva
 Group:		Networking
-PreReq:		rc-scripts
+Requires:	rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 
 %description relay
@@ -139,8 +139,8 @@ fi
 %doc AUTHORS BUGS ChangeLog NEWS README TODO javascript.txt
 %attr(755,root,root) %{_bindir}/camserv
 %dir %{_sysconfdir}/%{name}
-%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}/%{name}.cfg
-%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}/defpage.html
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/%{name}.cfg
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/defpage.html
 %dir %{_datadir}/camserv
 %{_datadir}/camserv/camserv.cfg
 %{_datadir}/camserv/defpage.html
@@ -153,4 +153,4 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/relay
 %attr(754,root,root) /etc/rc.d/init.d/%{name}-relay
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/%{name}-relay
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}-relay
