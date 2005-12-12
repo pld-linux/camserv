@@ -20,11 +20,11 @@ BuildRequires:	imlib2-devel >= 1.0.6
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libltdl-devel
 BuildRequires:	libtool
-Requires:	rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	gdk-pixbuf >= 0.14.0
 Requires:	imlib2 >= 1.0.5
 Requires:	libjpeg >= 6b
+Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -52,8 +52,8 @@ Do³±czono tak¿e narzêdzia do obs³ugi serwera obrazu z kamer.
 Summary:	Relay for camserv
 Summary(pl):	Przeka¼nik dla camserva
 Group:		Networking
-Requires:	rc-scripts
 Requires(post,preun):	/sbin/chkconfig
+Requires:	rc-scripts
 
 %description relay
 Relay for camserv.
