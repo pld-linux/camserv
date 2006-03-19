@@ -97,8 +97,8 @@ install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/%{name}-relay
 mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}.cfg $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/%{name}.cfg
 mv -f $RPM_BUILD_ROOT%{_datadir}/%{name}/defpage.html $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/defpage.html
 
-ln -s /etc/%{name}/%{name}.cfg $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}.cfg
-ln -s /etc/%{name}/defpage.html $RPM_BUILD_ROOT%{_datadir}/%{name}/defpage.html
+ln -s %{_sysconfdir}/%{name}/%{name}.cfg $RPM_BUILD_ROOT%{_datadir}/%{name}/%{name}.cfg
+ln -s %{_sysconfdir}/%{name}/defpage.html $RPM_BUILD_ROOT%{_datadir}/%{name}/defpage.html
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -115,17 +115,11 @@ fi
 
 %post relay
 /sbin/chkconfig --add %{name}-relay
-if [ -f /var/lock/subsys/%{name}-relay ]; then
-	/etc/rc.d/init.d/%{name}-relay restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/%{name}-relay start\" to start %{name}-relay service."
-fi
+%service %{name}-relay restart
 
 %preun relay
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/%{name}-relay ]; then
-		/etc/rc.d/init.d/%{name}-relay stop 1>&2
-	fi
+	%service %{name}-relay stop
 	/sbin/chkconfig --del %{name}-relay
 fi
 
