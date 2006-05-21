@@ -2,7 +2,7 @@ Summary:	A streaming web video server and utilities
 Summary(pl):	Serwer strumieni obrazu z WWW i narzêdzia
 Name:		camserv
 Version:	0.5.1
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/cserv/%{name}-%{version}.tar.gz
