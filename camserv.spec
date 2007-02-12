@@ -1,5 +1,5 @@
 Summary:	A streaming web video server and utilities
-Summary(pl.UTF-8):   Serwer strumieni obrazu z WWW i narzędzia
+Summary(pl.UTF-8):	Serwer strumieni obrazu z WWW i narzędzia
 Name:		camserv
 Version:	0.5.1
 Release:	3
@@ -51,7 +51,7 @@ Dołączono także narzędzia do obsługi serwera obrazu z kamer.
 
 %package relay
 Summary:	Relay for camserv
-Summary(pl.UTF-8):   Przekaźnik dla camserva
+Summary(pl.UTF-8):	Przekaźnik dla camserva
 Group:		Networking
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
