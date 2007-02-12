@@ -1,5 +1,5 @@
 Summary:	A streaming web video server and utilities
-Summary(pl):	Serwer strumieni obrazu z WWW i narzêdzia
+Summary(pl.UTF-8):   Serwer strumieni obrazu z WWW i narzÄ™dzia
 Name:		camserv
 Version:	0.5.1
 Release:	3
@@ -38,20 +38,20 @@ given the modularity of the camera plugin modules.
 
 Utilities for camera broadcast webserver offloading are also included.
 
-%description -l pl
+%description -l pl.UTF-8
 Camserv jest skrajnie modularnym programem do tworzenia strumieni
-obrazu dla klientów sieciowych. Mog± byæ dodane filtry dla tekstu w
-wy¶wietlanym okienku, a tak¿e wszystkiego innego, co chcia³oby siê
-dodaæ.
+obrazu dla klientÃ³w sieciowych. MogÄ… byÄ‡ dodane filtry dla tekstu w
+wyÅ›wietlanym okienku, a takÅ¼e wszystkiego innego, co chciaÅ‚oby siÄ™
+dodaÄ‡.
 
-Ponadto powinien byæ ³atwo przeno¶ny na inne uniksy dziêki
-modularno¶ci wtyczek dla kamer.
+Ponadto powinien byÄ‡ Å‚atwo przenoÅ›ny na inne uniksy dziÄ™ki
+modularnoÅ›ci wtyczek dla kamer.
 
-Do³±czono tak¿e narzêdzia do obs³ugi serwera obrazu z kamer.
+DoÅ‚Ä…czono takÅ¼e narzÄ™dzia do obsÅ‚ugi serwera obrazu z kamer.
 
 %package relay
 Summary:	Relay for camserv
-Summary(pl):	Przeka¼nik dla camserva
+Summary(pl.UTF-8):   PrzekaÅºnik dla camserva
 Group:		Networking
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
@@ -59,8 +59,8 @@ Requires:	rc-scripts
 %description relay
 Relay for camserv.
 
-%description relay -l pl
-Przeka¼nik dla camserva.
+%description relay -l pl.UTF-8
+PrzekaÅºnik dla camserva.
 
 %prep
 %setup -q
